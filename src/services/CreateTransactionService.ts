@@ -1,5 +1,5 @@
 import { getRepository } from 'typeorm';
-// import AppError from '../errors/AppError';
+import AppError from '../errors/AppError';
 
 import Transaction from '../models/Transaction';
 
@@ -19,6 +19,10 @@ class CreateTransactionService {
     type,
     category,
   }: Request): Promise<Transaction> {
+    if (type !== 'income' && type !== 'outcome') {
+      throw new AppError('Tipo de transação inválida');
+    }
+
     const transactionRepository = getRepository(Transaction);
     const categoryService = new CreateCategoryService();
 
@@ -30,6 +34,10 @@ class CreateTransactionService {
       type,
       category_id: category_id.id,
     });
+
+    if (!transaction) {
+      throw new AppError('Problemas na criação da transação');
+    }
 
     await transactionRepository.save(transaction);
 
