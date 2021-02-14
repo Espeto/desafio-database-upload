@@ -35,10 +35,6 @@ class CreateTransactionService {
       category_id: category_id.id,
     });
 
-    if (!transaction) {
-      throw new AppError('Problemas na criação da transação');
-    }
-
     await transactionRepository.save(transaction);
 
     return transaction;
