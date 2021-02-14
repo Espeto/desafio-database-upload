@@ -1,4 +1,4 @@
-import { getRepository } FindOperator, 'typeorm';
+import { getRepository } from 'typeorm';
 
 import Category from '../models/Category';
 
@@ -11,16 +11,16 @@ interface Response {
 }
 
 class CreateCategoryService {
-  public async execute({category}: Request): Promise<Response> {
+  public async execute({ category }: Request): Promise<Response> {
     const catergoryRepository = getRepository(Category);
 
     let checkCategoryExists = await catergoryRepository.findOne({
-      where: {category},
+      where: { title: category },
     });
 
     if (!checkCategoryExists) {
       checkCategoryExists = catergoryRepository.create({
-        category: category,
+        title: category,
       });
 
       await catergoryRepository.save(checkCategoryExists);
