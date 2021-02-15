@@ -1,7 +1,8 @@
-import { getRepository } from 'typeorm';
+import { getCustomRepository } from 'typeorm';
 import AppError from '../errors/AppError';
 
 import Transaction from '../models/Transaction';
+import TransactionsRepository from '../repositories/TransactionsRepository';
 
 import CreateCategoryService from './CreateCategoryService';
 
@@ -23,7 +24,18 @@ class CreateTransactionService {
       throw new AppError('Tipo de transação inválida');
     }
 
-    const transactionRepository = getRepository(Transaction);
+    if (value <= 0) {
+      throw new AppError('Valor inválido');
+    }
+
+    const transactionRepository = getCustomRepository(TransactionsRepository);
+
+    const balance = await transactionRepository.getBalance();
+
+    if (type === 'outcome' && value > balance.total) {
+      throw new AppError('Saldo insuficiente');
+    }
+
     const categoryService = new CreateCategoryService();
 
     const category_id = await categoryService.execute({ category });
