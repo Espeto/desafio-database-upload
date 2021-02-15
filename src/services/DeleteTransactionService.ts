@@ -17,8 +17,6 @@ class DeleteTransactionService {
         throw new AppError(error.message);
       });
 
-    console.log(transaction);
-
     if (!transaction) {
       throw new AppError('Transação não encontrada', 404);
     }
