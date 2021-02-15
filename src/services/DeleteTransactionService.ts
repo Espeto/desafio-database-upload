@@ -9,7 +9,21 @@ interface Request {
 
 class DeleteTransactionService {
   public async execute({ id }: Request): Promise<void> {
-    // TODO
+    const transactionRepository = getRepository(Transaction);
+
+    const transaction = await transactionRepository
+      .findOne({ id })
+      .catch(error => {
+        throw new AppError(error.message);
+      });
+
+    console.log(transaction);
+
+    if (!transaction) {
+      throw new AppError('Transação não encontrada', 404);
+    }
+
+    await transactionRepository.delete(id);
   }
 }
 
