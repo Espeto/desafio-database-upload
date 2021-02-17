@@ -11,22 +11,22 @@ interface Response {
 }
 
 class CreateCategoryService {
-  public async execute({ category }: Request): Promise<Response> {
+  public async execute({ category }: Request): Promise<Category> {
     const catergoryRepository = getRepository(Category);
 
-    let checkCategoryExists = await catergoryRepository.findOne({
+    let checkCategory = await catergoryRepository.findOne({
       where: { title: category },
     });
 
-    if (!checkCategoryExists) {
-      checkCategoryExists = catergoryRepository.create({
+    if (!checkCategory) {
+      checkCategory = catergoryRepository.create({
         title: category,
       });
 
-      await catergoryRepository.save(checkCategoryExists);
+      await catergoryRepository.save(checkCategory);
     }
 
-    return { id: checkCategoryExists.id };
+    return checkCategory;
   }
 }
 
