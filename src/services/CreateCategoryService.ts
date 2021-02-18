@@ -6,10 +6,6 @@ interface Request {
   category: string;
 }
 
-interface Response {
-  id: string;
-}
-
 class CreateCategoryService {
   public async execute({ category }: Request): Promise<Category> {
     const catergoryRepository = getRepository(Category);
