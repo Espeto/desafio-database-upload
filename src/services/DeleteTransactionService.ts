@@ -11,11 +11,7 @@ class DeleteTransactionService {
   public async execute({ id }: Request): Promise<void> {
     const transactionRepository = getRepository(Transaction);
 
-    const transaction = await transactionRepository
-      .findOne({ id })
-      .catch(error => {
-        throw new AppError(error.message);
-      });
+    const transaction = await transactionRepository.findOne({ id });
 
     if (!transaction) {
       throw new AppError('Transação não encontrada', 404);
