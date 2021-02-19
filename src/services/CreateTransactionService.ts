@@ -30,9 +30,9 @@ class CreateTransactionService {
 
     const transactionRepository = getCustomRepository(TransactionsRepository);
 
-    const balance = await transactionRepository.getBalance();
+    const { total } = await transactionRepository.getBalance();
 
-    if (type === 'outcome' && value > balance.total) {
+    if (type === 'outcome' && value > total) {
       throw new AppError('Saldo insuficiente');
     }
 
